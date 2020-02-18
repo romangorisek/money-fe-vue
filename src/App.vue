@@ -1,59 +1,47 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    ><div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <i class="fab fa-accessible-icon"></i>
-      </v-btn>
-    </v-app-bar>
+  <v-app id="inspire">
+    <TheNavBar
+      v-if="hasNavigationAndFooter"
+    />
 
     <v-content>
-      <HelloWorld/>
+      <v-container fluid>
+        <router-view :key="$route.path" v-show="showPage" @ready="pageReady"/>
+        <AppSpinner v-show="!showPage" />
+      </v-container>
     </v-content>
+
+    <v-footer v-if="hasNavigationAndFooter" class="footer" app>
+      <span class="white--text">&copy; 2019</span>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import TheNavBar from '@/components/TheNavBar'
 
 export default {
-  name: 'App',
-
   components: {
-    HelloWorld,
+    TheNavBar,
   },
-
   data: () => ({
-    //
+    showPage: false,
   }),
+  computed: {
+    hasNavigationAndFooter () {
+      return !['Login', 'Register'].includes(this.$route.name)
+    },
+  },
+  methods: {
+    pageReady () {
+      this.showPage = true
+    },
+  },
+  created () {
+    this.$router.beforeEach((to, from, next) => {
+      this.showPage = false
+      next()
+    })
+  },
 }
 </script>
