@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     user () {
-      return { name: 'Roman hardcoded' }
+      return this.$store.state.users.currentUser
     },
     currentLocation () {
       return this.$route.name

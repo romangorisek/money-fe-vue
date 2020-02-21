@@ -12,13 +12,13 @@
     </v-content>
 
     <v-footer v-if="hasNavigationAndFooter" class="footer" app>
-      <span class="white--text">&copy; 2019</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
 import TheNavBar from '@/components/TheNavBar'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -31,10 +31,22 @@ export default {
     hasNavigationAndFooter () {
       return !['Login', 'Register'].includes(this.$route.name)
     },
+    jwt () {
+      return this.$store.state.auth.jwt
+    },
+    user () {
+      return this.$store.state.users.currentUser
+    },
   },
   methods: {
+    ...mapActions('users', ['loadCurrentUser']),
     pageReady () {
       this.showPage = true
+    },
+    loadUser () {
+      if (this.jwt && !this.user) {
+        this.loadCurrentUser()
+      }
     },
   },
   created () {
@@ -42,6 +54,8 @@ export default {
       this.showPage = false
       next()
     })
+
+    this.loadUser()
   },
 }
 </script>

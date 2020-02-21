@@ -1,8 +1,8 @@
 <template>
   <v-row>
-    <v-col cols="12" md="6" offset-md="3">
-      <form @submit.prevent="save">
+    <form @submit.prevent="save" >
 
+      <v-col cols="12" md="6" offset-md="3">
         <v-select
           :items="transactionTypes"
           item-text="name"
@@ -15,7 +15,9 @@
         >
           <FormErrorsLine v-if="!$v.form.type_id.required" text="Polje je obvezno" />
         </FormErrors>
+      </v-col>
 
+      <v-col cols="12" md="6" offset-md="3">
         <v-select
           :items="accounts"
           item-text="name"
@@ -28,7 +30,9 @@
         >
           <FormErrorsLine v-if="!$v.form.account_id.required" text="Polje je obvezno" />
         </FormErrors>
+      </v-col>
 
+      <v-col cols="12" md="6" offset-md="3">
         <v-menu
           v-model="showDatePicker"
           :close-on-content-click="false"
@@ -52,7 +56,9 @@
         >
           <FormErrorsLine v-if="!$v.form.account_id.required" text="Polje je obvezno" />
         </FormErrors>
+      </v-col>
 
+      <v-col cols="12" md="6" offset-md="3">
         <v-text-field
           v-model="form.amount"
           label="Znesek"
@@ -62,11 +68,12 @@
         >
           <FormErrorsLine v-if="!$v.form.amount.required" text="Polje je obvezno" />
         </FormErrors>
+      </v-col>
 
+      <v-col cols="12" md="6" offset-md="3">
         <v-btn type="submit" class="float-right">Shrani</v-btn>
-
-      </form>
-    </v-col>
+      </v-col>
+    </form>
   </v-row>
 </template>
 
@@ -143,3 +150,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+form {
+  width: 100%;
+}
+</style>

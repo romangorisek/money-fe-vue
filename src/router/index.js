@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -44,12 +45,8 @@ const routes = [
     path: '/logout',
     name: 'Logout',
     beforeEnter (to, from, next) {
-      // store.dispatch('auth/endIdentity')
-      //   .then(() => {
-      //     store.dispatch('auth/signOut')
-      //       .then(() => next({ name: 'Login' }))
-      //   })
-      next({ name: 'Login' })
+      store.dispatch('auth/signOut')
+        .then(() => next({ name: 'Login' }))
     },
   },
 ]
@@ -58,6 +55,22 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(route => route.meta.requiresGuest)) {
+    if (!store.state.auth.jwt) {
+      next()
+    } else {
+      next({ name: 'Home' })
+    }
+  } else {
+    if (store.state.auth.jwt) {
+      next()
+    } else {
+      next({ name: 'Login', query: { redirectTo: to.path } })
+    }
+  }
 })
 
 export default router

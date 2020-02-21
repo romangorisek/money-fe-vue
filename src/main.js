@@ -11,6 +11,9 @@ import { parsePrice } from '@/utils/price'
 
 import AppSpinner from '@/components/AppSpinner'
 
+import 'awesome-notifications/dist/style.css'
+import 'awesome-notifications/dist/index.var.js'
+
 const moment = require('moment')
 require('moment/locale/si')
 

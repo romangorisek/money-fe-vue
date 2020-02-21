@@ -1,12 +1,12 @@
 
 export const loadItems = component => {
   component.loadItems()
-    .then(items => { component.asyncDataStatus_fetched() })
+    .then(items => { component.$emit('ready') })
 }
 
 export const loadItem = component => {
   component.loadItem(component.id)
-    .then(items => { component.asyncDataStatus_fetched() })
+    .then(items => { component.$emit('ready') })
 }
 
 export const deleteItem = (item, component) => {
@@ -19,15 +19,22 @@ export const deleteItem = (item, component) => {
     })
 }
 
-export const saveItem = (data, redirect, component) => {
-  component.saveItem({ id: component.id, ...data })
+export const createItem = (data, component) => {
+  component.createItem({ id: component.id, ...data })
     .then(item => {
       component.$notify({
         type: 'success',
         text: 'Podatki so bili uspešno shranjeni.',
       })
-      if (redirect) {
-        component.$router.push({ name: redirect })
-      }
+    })
+}
+
+export const updateItem = (data, component) => {
+  component.updateItem({ id: component.id, ...data })
+    .then(item => {
+      component.$notify({
+        type: 'success',
+        text: 'Podatki so bili uspešno shranjeni.',
+      })
     })
 }
