@@ -35,10 +35,10 @@ export default {
       this.currentTab = 'accounts'
     },
     showExpenses () {
-      this.currentTab = 'incomes'
+      this.currentTab = 'expenses'
     },
     showIncomes () {
-      this.currentTab = 'expenses'
+      this.currentTab = 'incomes'
     },
   },
 }

@@ -23,7 +23,7 @@
           item-text="name"
           item-value="id"
           v-model="form.account_id"
-          label="Stopnja davka"
+          label="Račun"
         ></v-select>
         <FormErrors
           v-if="$v.form.$error && (!$v.form.account_id.required)"
@@ -81,6 +81,7 @@
 import { required } from 'vuelidate/lib/validators'
 import FormErrors from '@/components/FormErrors'
 import FormErrorsLine from '@/components/FormErrorsLine'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -88,14 +89,6 @@ export default {
     FormErrorsLine,
   },
   props: {
-    transactionTypes: {
-      required: true,
-      type: Array,
-    },
-    accounts: {
-      required: true,
-      type: Array,
-    },
     transaction: {
       default: () => {},
       type: Object,
@@ -133,20 +126,50 @@ export default {
     formatedDate () {
       return this.date ? this.$moment(this.date).format('DD.MM.YYYY') : ''
     },
+    transactionTypes () {
+      const incomes = Object.values(this.$store.state.incomes.items).map(item => { item.group = 'Prihodki'; item.name = item.title; return item })
+      const expenses = Object.values(this.$store.state.expenses.items).map(item => { item.group = 'Odhodki'; item.name = item.title; return item })
+
+      return [
+        { header: 'Odhodki' },
+        ...expenses,
+        { divider: true },
+        { header: 'Prihodki' },
+        ...incomes,
+      ]
+    },
+    accounts () {
+      return Object.values(this.$store.state.accounts.items).map(item => { item.name = item.title; return item })
+    },
+
   },
   methods: {
+    ...mapActions('accounts', { loadAccounts: 'loadItems' }),
+    ...mapActions('incomes', { loadIncomes: 'loadItems' }),
+    ...mapActions('expenses', { loadExpenses: 'loadItems' }),
     save () {
       this.$v.$touch()
       if (!this.$v.form.$error) {
+        this.form.done_on = this.$moment(this.date)
         this.$emit('save', { data: this.form })
       }
     },
     cancel () {
       this.$emit('cancel')
     },
+    clear () {
+      this.form.type_id = null
+      this.form.account_id = null
+      this.form.done_on = this.$moment()
+      this.form.amount = null
+      this.$v.$reset()
+    },
   },
   created () {
-    this.form = { ...this.form, ...this.group }
+    this.loadAccounts()
+    this.loadIncomes()
+    this.loadExpenses()
+    this.form = { ...this.form, ...this.transaction }
   },
 }
 </script>

@@ -8,35 +8,46 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/Home.vue'),
+    component: () => import(/* webpackChunkName: "home" */ '@/pages/Home.vue'),
   },
   {
     path: '/business',
     name: 'Business',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/Business.vue'),
+    component: () => import(/* webpackChunkName: "business" */ '@/pages/Business.vue'),
   },
   {
     path: '/settings',
     name: 'Settings',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/Settings.vue'),
+    component: () => import(/* webpackChunkName: "settings" */ '@/pages/Settings.vue'),
   },
   {
     path: '/transaction',
     name: 'Transaction',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/Transaction.vue'),
+    component: () => import(/* webpackChunkName: "transaction" */ '@/pages/Transaction.vue'),
+  },
+  {
+    path: '/transactionReport',
+    name: 'TransactionReport',
+    component: () => import(/* webpackChunkName: "transactionReport" */ '@/pages/TransactionReport.vue'),
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/Register.vue'),
+    component: () => import(/* webpackChunkName: "register" */ '@/pages/Register.vue'),
     meta: {
       requiresGuest: true,
     },
   },
   {
+    path: '/transactionEdit/:id',
+    name: 'TransactionEdit',
+    component: () => import(/* webpackChunkName: "transactionEdit" */ '@/pages/TransactionEdit.vue'),
+    props: true,
+  },
+  {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "about" */ '../pages/Login.vue'),
+    component: () => import(/* webpackChunkName: "login" */ '@/pages/Login.vue'),
     meta: {
       requiresGuest: true,
     },

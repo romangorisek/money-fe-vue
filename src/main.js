@@ -15,7 +15,7 @@ import 'awesome-notifications/dist/style.css'
 import 'awesome-notifications/dist/index.var.js'
 
 const moment = require('moment')
-require('moment/locale/si')
+require('moment/locale/sl')
 
 Vue.use(Vuelidate)
 Vue.use(require('vue-moment'), {

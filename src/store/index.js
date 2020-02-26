@@ -6,6 +6,7 @@ import users from './modules/users'
 import accounts from './modules/accounts'
 import incomes from './modules/incomes'
 import expenses from './modules/expenses'
+import transactions from './modules/transactions'
 
 Vue.use(Vuex)
 
@@ -22,5 +23,6 @@ export default new Vuex.Store({
     accounts,
     incomes,
     expenses,
+    transactions,
   },
 })

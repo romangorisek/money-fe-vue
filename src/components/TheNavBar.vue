@@ -71,6 +71,10 @@ export default {
           icon: 'mdi-home',
           route: 'Home',
         }, {
+          title: 'Poročilo transakcij',
+          icon: 'fas fa-file-invoice-dollar',
+          route: 'TransactionReport',
+        }, {
           title: 'Transakcija',
           icon: 'mdi-cash-multiple',
           route: 'Transaction',

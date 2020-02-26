@@ -33,17 +33,17 @@
                 solo
                 dense
                 v-model="form.budget"
-                label="Stanje"
+                label="Budget"
               ></v-text-field>
             </td>
 
             <td class="text-right" v-if="editMode !== item.id">
-              <ButtonActionEdit class="float-right" @click="toggleEditMode(item)" />
-              <ButtonActionDelete class="float-right" @click="removeItem(item)" />
+              <ButtonActionEdit @click="toggleEditMode(item)" />
+              <ButtonActionDelete @click="removeItem(item)" />
             </td>
             <td class="text-right" v-else>
-              <ButtonActionSave class="float-right" @click="editItem(item)" />
-              <ButtonActionCancel class="float-right" @click="toggleEditMode(item)" />
+              <ButtonActionSave @click="editItem(item)" />
+              <ButtonActionCancel @click="toggleEditMode(item)" />
             </td>
           </tr>
         </tbody>
@@ -86,7 +86,6 @@ export default {
   methods: {
     ...mapActions('expenses', ['loadItems', 'createItem', 'updateItem', 'deleteItem']),
     createNew ({ data }) {
-      console.log({ ...data })
       this.createItem({ ...data })
         .then(item => {
           this.$notify({

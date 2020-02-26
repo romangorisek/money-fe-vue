@@ -1,8 +1,8 @@
 import api from './base'
 
 export default {
-  getAll () {
-    return api().get('transactions')
+  getAll (filters) {
+    return api().get('transactions', { params: filters })
   },
   getById (id) {
     return api().get(`transactions/${id}`)

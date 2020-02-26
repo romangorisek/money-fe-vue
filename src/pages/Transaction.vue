@@ -1,8 +1,6 @@
 <template>
   <div>
     <FormTransaction
-      :transactionTypes="transactionTypes"
-      :accounts="accounts"
       @save="save"
       ref="form"
     />
@@ -11,26 +9,17 @@
 
 <script>
 import FormTransaction from '@/components/FormTransaction'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
     FormTransaction,
   },
-  computed: {
-    transactionTypes () {
-      return []
-    },
-    accounts () {
-      return []
-    },
-  },
   created () {
     this.$emit('ready')
   },
   methods: {
-    createTransaction () {
-      console.log('aaaaasadad')
-    },
+    ...mapActions('transactions', { createTransaction: 'createItem' }),
     save ({ data }) {
       this.createTransaction(data)
         .then(company => {
@@ -38,7 +27,7 @@ export default {
             type: 'success',
             text: 'Transakcija dodana',
           })
-          this.$refs.form.clearForm()
+          this.$refs.form.clear()
         })
     },
   },
