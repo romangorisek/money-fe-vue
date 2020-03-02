@@ -1,33 +1,27 @@
 <template>
-  <div>
-    <div class="row">
-      <div class="col-6 mb-4" v-if="accounts.length">
-        <div class="row mb-4">
-          <div class="col">
-            <h5 class="mb-2">Stanje na računih:</h5>
-            <accountSum :accounts="accounts"></accountSum>
-          </div>
-        </div>
-        <div class="row" v-if="bulletCharts.length">
-          <div class="col">
-            <h5 class="mb-2">Budget:</h5>
-            <div v-for="bulletChart of bulletCharts" :key="bulletChart.title">
-              <bulletChart :chartData="bulletChart"></bulletChart>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 mb-4">
-          <h5 class="mb-2">Razporeditev porabe:</h5>
-          <div id="chartdiv" style="width: 100%; height: 500px"></div>
+  <div class="row">
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-0 col-lg-4 mb-4" v-if="transactions.length">
+      <monthlyBalance :transactions="transactions"></monthlyBalance>
+    </div>
+
+    <div class="col-12 col-sm-10 offset-sm-1 col-md-6 offset-md-0 col-lg-8 mb-4" v-if="bulletCharts.length">
+      <h4 class="mb-2">Budget:</h4>
+      <div v-for="bulletChart of bulletCharts" :key="bulletChart.title">
+        <bulletChart :chartData="bulletChart"></bulletChart>
       </div>
     </div>
 
-    <div class="row"  v-if="transactions.length">
-      <div class="col">
-        <monthlyBalance :transactions="transactions"></monthlyBalance>
-      </div>
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-0 col-lg-4 mb-4" v-if="accounts.length">
+      <h4 class="mb-2">Stanje na računih:</h4>
+      <accountSum :accounts="accounts"></accountSum>
     </div>
+
+    <div class="col-12 col-sm-10 offset-sm-1 col-md-6 offset-md-0 col-lg-8 mb-4">
+        <h4 class="mb-2">Razporeditev porabe:</h4>
+        <div id="chartdiv" style="width: 100%; height: 300px"></div>
+    </div>
+
   </div>
 </template>
 
@@ -114,14 +108,14 @@ export default {
 
     pieChartData () {
       let data = []
-      const groupbytitle = this.transactions.reduce((h, transaction) => {
+      const groupbytitle = this.transactions.filter(t => t.amount < 0).reduce((h, transaction) => {
         const title = this.getTransactionTypeNameById(transaction.type_id)
         return Object.assign(h, { [title]: (h[title] || []).concat(transaction.amount) })
       }, {})
       data = Object.keys(groupbytitle).map((key, i) => {
         return { title: key, sum: -1 * groupbytitle[key].reduce((a, b) => a + b) }
       })
-      return data
+      return data.map(item => ({ ...item, sum: item.sum / 100 }))
     },
 
     setBulletChartData () {
@@ -135,7 +129,7 @@ export default {
           newBulletChartData.sum = 0
           pieChartData.forEach(item => {
             if (item.title === expense.title) {
-              newBulletChartData.sum = item.sum
+              newBulletChartData.sum = (item.sum * 100)
             }
           })
           bulletChartData.push(newBulletChartData)

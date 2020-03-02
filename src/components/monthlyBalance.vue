@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col">
-        {{ currentMonth }}:
+        <h4>{{ currentMonth }}:</h4>
       </div>
     </div>
     <div class="row">
@@ -15,10 +15,10 @@
     </div>
     <div class="row">
       <div class="col-6 text-right">
-        <b>Stroski:</b>
+        Stroski:
       </div>
       <div class="col-6 text-center">
-        <b>{{ totalExpense | price }}</b>
+        {{ totalExpense | price }}
       </div>
     </div>
     <div class="row">
@@ -30,7 +30,7 @@
       <div class="col-6 text-right">
         Stanje:
       </div>
-      <div class="col-6 text-center">
+      <div class="col-6 text-center" :class="balance < 0 ? 'balance-red' : ''">
         {{ balance | price }}
       </div>
     </div>
@@ -58,12 +58,6 @@ export default {
       return currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1)
     },
   },
-  methods: {
-    isSavingsAccount (account) {
-      // return account.id === '1271588f-9907-4ea5-a8be-04fe678cb572' || account.id === 'af8a1675-69fc-4ca8-996d-18dd2b32efdc'
-      return false
-    },
-  },
   created () {
     this.transactions.forEach(transaction => {
       if (transaction.amount > 0) {
@@ -76,3 +70,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.balance-red {
+  color: red;
+  font-weight: bold;
+}
+</style>

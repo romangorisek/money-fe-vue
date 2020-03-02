@@ -65,6 +65,14 @@ export default {
     return {
       drawer: true,
       businessUnitPicker: false,
+      translations: {
+        Home: 'Domov',
+        TransactionReport: 'Poročilo transakcij',
+        Transaction: 'Transakcija',
+        AccountTransfer: 'Prenos med računi',
+        Business: 'Poslovno',
+        Settings: 'Nastavitve',
+      },
       menuItems: [
         {
           title: 'Domov',
@@ -78,6 +86,10 @@ export default {
           title: 'Transakcija',
           icon: 'mdi-cash-multiple',
           route: 'Transaction',
+        }, {
+          title: 'Prenos med računi',
+          icon: 'fas fa-exchange-alt',
+          route: 'AccountTransfer',
         }, {
           title: 'Poslovno',
           icon: 'mdi-account-tie-outline',
@@ -95,7 +107,7 @@ export default {
       return this.$store.state.users.currentUser
     },
     currentLocation () {
-      return this.$route.name
+      return this.translations[this.$route.name]
     },
   },
   methods: {

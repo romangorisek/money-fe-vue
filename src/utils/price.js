@@ -1,6 +1,7 @@
 
 export const parsePrice = price => {
-  if (!price) return ''
-  if (isNaN(parseFloat((`${price}`).replace(',', '.')))) return ''
+  price = price / 100
+  if (!price) price = 0
+  if (isNaN(parseFloat((`${price}`).replace(',', '.')))) price = 0
   return (`${parseFloat((`${price}`).replace(',', '.')).toFixed(2)}`).replace('.', ',')
 }

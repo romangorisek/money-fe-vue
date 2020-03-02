@@ -15,7 +15,6 @@
               :value="formatedStartDate"
               label="Datum transakcije"
               readonly
-              dense
               v-on="on"
             ></v-text-field>
           </template>
@@ -40,7 +39,6 @@
               :value="formatedEndDate"
               label="Datum transakcije"
               readonly
-              dense
               v-on="on"
             ></v-text-field>
           </template>
@@ -61,7 +59,6 @@
           item-value="id"
           v-model="form.transactionType"
           label="Tip transakcije"
-          dense
         ></v-select>
       </v-col>
 
@@ -75,7 +72,6 @@
           item-value="id"
           v-model="form.account"
           label="Račun"
-          dense
         ></v-select>
       </v-col>
 

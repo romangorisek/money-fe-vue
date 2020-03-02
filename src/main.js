@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import Vuelidate from 'vuelidate'
+import VueLodash from 'vue-lodash'
+import lodash from 'lodash'
 
 import notifications from '@/mixins/notifications'
 import asyncDataStatus from '@/mixins/asyncDataStatus'
@@ -21,6 +23,8 @@ Vue.use(Vuelidate)
 Vue.use(require('vue-moment'), {
   moment,
 })
+
+Vue.use(VueLodash, { lodash })
 
 Vue.filter('price', function (price) {
   return parsePrice(price)

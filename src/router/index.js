@@ -26,6 +26,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "transaction" */ '@/pages/Transaction.vue'),
   },
   {
+    path: '/accountTransfer',
+    name: 'AccountTransfer',
+    component: () => import(/* webpackChunkName: "transaction" */ '@/pages/AccountTransfer.vue'),
+  },
+  {
     path: '/transactionReport',
     name: 'TransactionReport',
     component: () => import(/* webpackChunkName: "transactionReport" */ '@/pages/TransactionReport.vue'),

@@ -51,17 +51,15 @@
             @change="showDatePicker = false"
           ></v-date-picker>
         </v-menu>
-        <FormErrors
-          v-if="$v.form.$error && (!$v.form.account_id.required)"
-        >
-          <FormErrorsLine v-if="!$v.form.account_id.required" text="Polje je obvezno" />
-        </FormErrors>
       </v-col>
 
       <v-col cols="12" md="6" offset-md="3">
         <v-text-field
           v-model="form.amount"
           label="Znesek"
+          :prepend-icon="amountSign"
+          :success="isIncomeSelected"
+          :error="form.type_id && !isIncomeSelected"
         ></v-text-field>
         <FormErrors
           v-if="$v.form.$error && (!$v.form.amount.required)"
@@ -96,12 +94,12 @@ export default {
   },
   data () {
     return {
-      date: new Date().toISOString().substr(0, 10),
+      date: this.$moment().format('YYYY-MM-DD'),
       showDatePicker: false,
       form: {
         type_id: null,
         account_id: null,
-        done_on: this.$moment(),
+        done_on: null,
         amount: null,
       },
     }
@@ -114,21 +112,33 @@ export default {
       account_id: {
         required,
       },
-      done_on: {
-        required,
-      },
       amount: {
         required,
       },
     },
   },
   computed: {
+    isIncomeSelected () {
+      return this.form.type_id && this.incomes.filter(income => income.id === this.form.type_id).length > 0
+    },
+    amountSign () {
+      if (!this.form.type_id) {
+        return ''
+      }
+      return this.isIncomeSelected ? 'mdi-plus' : 'mdi-minus'
+    },
     formatedDate () {
       return this.date ? this.$moment(this.date).format('DD.MM.YYYY') : ''
     },
+    incomes () {
+      return Object.values(this.$store.state.incomes.items)
+    },
+    expenses () {
+      return Object.values(this.$store.state.expenses.items)
+    },
     transactionTypes () {
-      const incomes = Object.values(this.$store.state.incomes.items).map(item => { item.group = 'Prihodki'; item.name = item.title; return item })
-      const expenses = Object.values(this.$store.state.expenses.items).map(item => { item.group = 'Odhodki'; item.name = item.title; return item })
+      const incomes = this.incomes.map(item => { item.group = 'Prihodki'; item.name = item.title; return item })
+      const expenses = this.expenses.map(item => { item.group = 'Odhodki'; item.name = item.title; return item })
 
       return [
         { header: 'Odhodki' },
@@ -150,8 +160,12 @@ export default {
     save () {
       this.$v.$touch()
       if (!this.$v.form.$error) {
-        this.form.done_on = this.$moment(this.date)
-        this.$emit('save', { data: this.form })
+        this.form.done_on = this.$moment(this.date).format('YYYY-MM-DD HH:mm:ss')
+        const data = { ...this.form }
+        if (!this.isIncomeSelected) {
+          data.amount = 0 - data.amount
+        }
+        this.$emit('save', { data })
       }
     },
     cancel () {
@@ -160,7 +174,7 @@ export default {
     clear () {
       this.form.type_id = null
       this.form.account_id = null
-      this.form.done_on = this.$moment()
+      this.form.done_on = null
       this.form.amount = null
       this.$v.$reset()
     },
@@ -169,7 +183,9 @@ export default {
     this.loadAccounts()
     this.loadIncomes()
     this.loadExpenses()
-    this.form = { ...this.form, ...this.transaction }
+    if (!this._.isEmpty(this.transaction)) {
+      this.form = { ...this.form, ...this.transaction, amount: Math.abs(this.transaction.amount) }
+    }
   },
 }
 </script>
