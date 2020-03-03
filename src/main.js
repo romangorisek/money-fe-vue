@@ -9,7 +9,7 @@ import lodash from 'lodash'
 
 import notifications from '@/mixins/notifications'
 import asyncDataStatus from '@/mixins/asyncDataStatus'
-import { parsePrice } from '@/utils/price'
+import { parsePrice, parsePriceAndSign } from '@/utils/price'
 
 import AppSpinner from '@/components/AppSpinner'
 
@@ -28,6 +28,9 @@ Vue.use(VueLodash, { lodash })
 
 Vue.filter('price', function (price) {
   return parsePrice(price)
+})
+Vue.filter('priceWithSign', function (price) {
+  return parsePriceAndSign(price)
 })
 Vue.filter('sloDate', function (date) {
   return moment(date).format('DD.MM.YYYY')

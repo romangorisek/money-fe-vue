@@ -10,7 +10,7 @@
             <th>Razlog</th>
             <th>Datum</th>
             <th>Račun</th>
-            <th>Znesek</th>
+            <th>Znesek (€)</th>
             <th></th>
           </tr>
         </thead>

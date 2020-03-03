@@ -10,7 +10,7 @@
         Prihodki:
       </div>
       <div class="col-6 text-center">
-        {{ totalIncome | price }}
+        {{ totalIncome | priceWithSign }}
       </div>
     </div>
     <div class="row">
@@ -18,7 +18,7 @@
         Stroski:
       </div>
       <div class="col-6 text-center">
-        {{ totalExpense | price }}
+        {{ totalExpense | priceWithSign }}
       </div>
     </div>
     <div class="row">
@@ -31,7 +31,7 @@
         Stanje:
       </div>
       <div class="col-6 text-center" :class="balance < 0 ? 'balance-red' : ''">
-        {{ balance | price }}
+        {{ balance | priceWithSign }}
       </div>
     </div>
   </div>

@@ -12,7 +12,7 @@
         {{account.title}}
       </div>
       <div class="col-6 text-center">
-        {{account.balance | price}}
+        {{account.balance | priceWithSign}}
       </div>
     </div>
 
@@ -28,7 +28,7 @@
         {{account.title}}
       </div>
       <div class="col-6 text-center">
-        {{account.balance | price}}
+        {{account.balance | priceWithSign}}
       </div>
     </div>
 
@@ -42,13 +42,13 @@
         Skupaj varčevanje:
       </div>
       <div class="col-6 text-center">
-        {{ sumSavings | price }}
+        {{ sumSavings | priceWithSign }}
       </div>
       <div class="col-6 text-center">
         <b>Skupaj ostalo:</b>
       </div>
       <div class="col-6 text-center">
-        <b>{{ sumOther | price }}</b>
+        <b>{{ sumOther | priceWithSign }}</b>
       </div>
     </div>
 
@@ -62,7 +62,7 @@
         <b>Skupaj:</b>
       </div>
       <div class="col-6 text-center">
-        <b>{{ sumTotal | price }}</b>
+        <b>{{ sumTotal | priceWithSign }}</b>
       </div>
     </div>
   </div>
