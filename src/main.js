@@ -15,6 +15,7 @@ import AppSpinner from '@/components/AppSpinner'
 
 import 'awesome-notifications/dist/style.css'
 import 'awesome-notifications/dist/index.var.js'
+import './registerServiceWorker'
 
 const moment = require('moment')
 require('moment/locale/sl')
