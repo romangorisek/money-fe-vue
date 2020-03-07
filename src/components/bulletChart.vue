@@ -30,6 +30,7 @@ export default {
   data () {
     return {
       container: null,
+      chart: null,
     }
   },
   computed: {
@@ -66,8 +67,8 @@ export default {
       /* Add data */
       chart.data = [{
         category: '',
-        value: this.chartData.sum,
-        target: this.chartData.budget,
+        value: this.chartData.sum / 100,
+        target: this.chartData.budget / 100,
       }]
 
       /* Create axes */
@@ -76,7 +77,7 @@ export default {
       categoryAxis.renderer.minGridDistance = 40
       categoryAxis.renderer.grid.template.disabled = true
 
-      const scaleMax = this.chartData.sum > this.chartData.budget * 1.2 ? this.chartData.sum * 1.1 : this.chartData.budget * 1.2
+      const scaleMax = (this.chartData.sum > this.chartData.budget * 1.2 ? this.chartData.sum * 1.1 : this.chartData.budget * 1.2) / 100
       const valueAxis = chart.xAxes.push(new am4charts.ValueAxis())
       valueAxis.renderer.minGridDistance = 40
       valueAxis.renderer.grid.template.disabled = true

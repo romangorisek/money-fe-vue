@@ -26,15 +26,12 @@
               ></v-text-field>
             </td>
 
-            <td v-if="editMode !== item.id">{{ item.budget }}</td>
+            <td v-if="editMode !== item.id">{{ item.budget | price }}</td>
             <td v-else class="td-input">
-              <v-text-field
-                class="input-without-details"
-                solo
-                dense
+              <PriceInputSmall
                 v-model="form.budget"
                 label="Budget"
-              ></v-text-field>
+              ></PriceInputSmall>
             </td>
 
             <td class="text-right" v-if="editMode !== item.id">
@@ -58,6 +55,7 @@ import ButtonActionDelete from './ButtonActionDelete'
 import ButtonActionEdit from './ButtonActionEdit'
 import ButtonActionSave from './ButtonActionSave'
 import ButtonActionCancel from './ButtonActionCancel'
+import PriceInputSmall from './PriceInputSmall'
 import { loadItems, deleteItem } from '@/utils/crudFunctions'
 import { mapActions } from 'vuex'
 
@@ -68,13 +66,14 @@ export default {
     ButtonActionEdit,
     ButtonActionSave,
     ButtonActionCancel,
+    PriceInputSmall,
   },
   data () {
     return {
       editMode: null,
       form: {
         title: null,
-        budget: null,
+        budget: '0,00',
       },
     }
   },
@@ -100,16 +99,18 @@ export default {
         this.editMode = null
         this.form.id = null
         this.form.title = null
-        this.form.budget = null
+        this.form.budget = '0,00'
       } else {
         this.form.id = item.id
         this.form.title = item.title
-        this.form.budget = item.budget
+        this.form.budget = (item.budget / 100).toFixed(2).replace('.', ',')
         this.editMode = item.id
       }
     },
     editItem (item) {
-      this.updateItem({ ...this.form })
+      const data = { ...this.form }
+      data.budget = data.budget.replace(',', '')
+      this.updateItem(data)
         .then(item => {
           this.toggleEditMode(item)
           this.$notify({

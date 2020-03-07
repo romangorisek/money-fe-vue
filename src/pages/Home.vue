@@ -8,7 +8,7 @@
     <div class="col-12 col-sm-10 offset-sm-1 col-md-6 offset-md-0 col-lg-8 mb-4" v-if="bulletCharts.length">
       <h4 class="mb-2">Budget:</h4>
       <div v-for="bulletChart of bulletCharts" :key="bulletChart.title">
-        <bulletChart :chartData="bulletChart"></bulletChart>
+        <bulletChart :chartData="bulletChart" />
       </div>
     </div>
 
@@ -28,7 +28,7 @@
 <script>
 import accountSum from '@/components/accountSum'
 import monthlyBalance from '@/components/monthlyBalance'
-import bulletChart from '@/components/bulletChart'
+import BulletChart from '@/components/BulletChart'
 import * as am4core from '@amcharts/amcharts4/core'
 import * as am4charts from '@amcharts/amcharts4/charts'
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated'
@@ -38,11 +38,12 @@ export default {
   components: {
     accountSum,
     monthlyBalance,
-    bulletChart,
+    BulletChart,
   },
   data () {
     return {
       bulletCharts: [],
+      chart: null,
     }
   },
   computed: {
@@ -155,6 +156,9 @@ export default {
         this.showPieChart()
         this.setBulletChartData()
       })
+  },
+  beforeDestroy () {
+    am4core.disposeAllCharts()
   },
 }
 </script>

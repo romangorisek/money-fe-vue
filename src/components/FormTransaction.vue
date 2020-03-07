@@ -54,13 +54,11 @@
       </v-col>
 
       <v-col cols="12" md="6" offset-md="3">
-        <v-text-field
+        <PriceInput
           v-model="form.amount"
-          label="Znesek"
-          :prepend-icon="amountSign"
-          :success="isIncomeSelected"
-          :error="form.type_id && !isIncomeSelected"
-        ></v-text-field>
+          :isIncomeSelected="isIncomeSelected"
+          :isExpenseSelected="form.type_id !== null && !isIncomeSelected"
+        />
         <FormErrors
           v-if="$v.form.$error && (!$v.form.amount.required)"
         >
@@ -77,14 +75,16 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import FormErrors from '@/components/FormErrors'
-import FormErrorsLine from '@/components/FormErrorsLine'
+import FormErrors from './FormErrors'
+import FormErrorsLine from './FormErrorsLine'
+import PriceInput from './PriceInput'
 import { mapActions } from 'vuex'
 
 export default {
   components: {
     FormErrors,
     FormErrorsLine,
+    PriceInput,
   },
   props: {
     transaction: {
@@ -100,7 +100,7 @@ export default {
         type_id: null,
         account_id: null,
         done_on: null,
-        amount: null,
+        amount: '0,00',
       },
     }
   },
@@ -119,13 +119,7 @@ export default {
   },
   computed: {
     isIncomeSelected () {
-      return this.form.type_id && this.incomes.filter(income => income.id === this.form.type_id).length > 0
-    },
-    amountSign () {
-      if (!this.form.type_id) {
-        return ''
-      }
-      return this.isIncomeSelected ? 'mdi-plus' : 'mdi-minus'
+      return this.form.type_id !== null && this.incomes.filter(income => income.id === this.form.type_id).length > 0
     },
     formatedDate () {
       return this.date ? this.$moment(this.date).format('DD.MM.YYYY') : ''
@@ -162,8 +156,9 @@ export default {
       if (!this.$v.form.$error) {
         this.form.done_on = this.$moment(this.date).format('YYYY-MM-DD HH:mm:ss')
         const data = { ...this.form }
+        data.amount = (data.amount + '').replace(',', '')
         if (!this.isIncomeSelected) {
-          data.amount = 0 - data.amount
+          data.amount = '-' + data.amount
         }
         this.$emit('save', { data })
       }
@@ -175,7 +170,7 @@ export default {
       this.form.type_id = null
       this.form.account_id = null
       this.form.done_on = null
-      this.form.amount = null
+      this.form.amount = '0,00'
       this.$v.$reset()
     },
   },
@@ -184,7 +179,7 @@ export default {
     this.loadIncomes()
     this.loadExpenses()
     if (!this._.isEmpty(this.transaction)) {
-      this.form = { ...this.form, ...this.transaction, amount: Math.abs(this.transaction.amount) }
+      this.form = { ...this.form, ...this.transaction, amount: Math.abs(this.transaction.amount / 100).toFixed(2).replace('.', ',') }
     }
   },
 }

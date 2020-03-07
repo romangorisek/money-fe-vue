@@ -15,10 +15,10 @@
       </v-col>
 
       <v-col cols="12" md="6" offset-md="3">
-        <v-text-field
+        <PriceInput
           v-model="form.balance"
           label="Stanje"
-        ></v-text-field>
+        ></PriceInput>
         <FormErrors
           v-if="$v.form.$error && (!$v.form.balance.required)"
         >
@@ -35,13 +35,15 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import FormErrors from '@/components/FormErrors'
-import FormErrorsLine from '@/components/FormErrorsLine'
+import FormErrors from './FormErrors'
+import FormErrorsLine from './FormErrorsLine'
+import PriceInput from './PriceInput'
 
 export default {
   components: {
     FormErrors,
     FormErrorsLine,
+    PriceInput,
   },
   props: {
     account: {
@@ -53,7 +55,7 @@ export default {
     return {
       form: {
         title: null,
-        balance: null,
+        balance: '0,00',
       },
     }
   },
@@ -71,6 +73,7 @@ export default {
     save () {
       this.$v.$touch()
       if (!this.$v.form.$error) {
+        this.form.balance = this.form.balance.replace(',', '')
         this.$emit('save', { data: this.form })
       }
     },
@@ -79,7 +82,7 @@ export default {
     },
     clear () {
       this.form.title = null
-      this.form.balance = null
+      this.form.balance = '0,00'
       this.$v.$reset()
     },
   },

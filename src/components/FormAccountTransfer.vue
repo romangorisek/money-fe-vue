@@ -33,10 +33,9 @@
       </v-col>
 
       <v-col cols="12" md="6" offset-md="3">
-        <v-text-field
+        <PriceInput
           v-model="form.amount"
-          label="Znesek"
-        ></v-text-field>
+        />
         <FormErrors
           v-if="$v.form.$error && (!$v.form.amount.required)"
         >
@@ -53,21 +52,23 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import FormErrors from '@/components/FormErrors'
-import FormErrorsLine from '@/components/FormErrorsLine'
+import FormErrors from './FormErrors'
+import FormErrorsLine from './FormErrorsLine'
+import PriceInput from './PriceInput'
 import { mapActions } from 'vuex'
 
 export default {
   components: {
     FormErrors,
     FormErrorsLine,
+    PriceInput,
   },
   data () {
     return {
       form: {
         account_from_id: null,
         account_to_id: null,
-        amount: null,
+        amount: '0,00',
       },
     }
   },
@@ -100,7 +101,9 @@ export default {
     save () {
       this.$v.$touch()
       if (!this.$v.form.$error) {
-        this.$emit('save', { data: this.form })
+        const data = { ...this.form }
+        data.amount = data.amount.replace(',', '')
+        this.$emit('save', { data })
       }
     },
     cancel () {
@@ -109,7 +112,7 @@ export default {
     clear () {
       this.form.account_from_id = null
       this.form.account_to_id = null
-      this.form.amount = null
+      this.form.amount = '0,00'
       this.$v.$reset()
     },
   },
