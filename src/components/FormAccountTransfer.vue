@@ -56,6 +56,7 @@ import FormErrors from './FormErrors'
 import FormErrorsLine from './FormErrorsLine'
 import PriceInput from './PriceInput'
 import { mapActions } from 'vuex'
+import { priceFloatToInd } from '@/utils/price'
 
 export default {
   components: {
@@ -68,7 +69,7 @@ export default {
       form: {
         account_from_id: null,
         account_to_id: null,
-        amount: '0,00',
+        amount: null,
       },
     }
   },
@@ -102,7 +103,7 @@ export default {
       this.$v.$touch()
       if (!this.$v.form.$error) {
         const data = { ...this.form }
-        data.amount = data.amount.replace(',', '')
+        data.amount = priceFloatToInd(data.amount)
         this.$emit('save', { data })
       }
     },
@@ -112,7 +113,7 @@ export default {
     clear () {
       this.form.account_from_id = null
       this.form.account_to_id = null
-      this.form.amount = '0,00'
+      this.form.amount = null
       this.$v.$reset()
     },
   },

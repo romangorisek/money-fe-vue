@@ -79,6 +79,7 @@ import FormErrors from './FormErrors'
 import FormErrorsLine from './FormErrorsLine'
 import PriceInput from './PriceInput'
 import { mapActions } from 'vuex'
+import { priceFloatToInd } from '@/utils/price'
 
 export default {
   components: {
@@ -100,7 +101,7 @@ export default {
         type_id: null,
         account_id: null,
         done_on: null,
-        amount: '0,00',
+        amount: null,
       },
     }
   },
@@ -156,7 +157,7 @@ export default {
       if (!this.$v.form.$error) {
         this.form.done_on = this.$moment(this.date).format('YYYY-MM-DD HH:mm:ss')
         const data = { ...this.form }
-        data.amount = (data.amount + '').replace(',', '')
+        data.amount = priceFloatToInd(data.amount)
         if (!this.isIncomeSelected) {
           data.amount = '-' + data.amount
         }
@@ -170,7 +171,7 @@ export default {
       this.form.type_id = null
       this.form.account_id = null
       this.form.done_on = null
-      this.form.amount = '0,00'
+      this.form.amount = null
       this.$v.$reset()
     },
   },
@@ -179,7 +180,7 @@ export default {
     this.loadIncomes()
     this.loadExpenses()
     if (!this._.isEmpty(this.transaction)) {
-      this.form = { ...this.form, ...this.transaction, amount: Math.abs(this.transaction.amount / 100).toFixed(2).replace('.', ',') }
+      this.form = { ...this.form, ...this.transaction, amount: Math.abs(this.transaction.amount / 100).toFixed(2) }
     }
   },
 }

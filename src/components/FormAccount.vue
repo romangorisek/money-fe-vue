@@ -35,6 +35,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { priceFloatToInd } from '@/utils/price'
 import FormErrors from './FormErrors'
 import FormErrorsLine from './FormErrorsLine'
 import PriceInput from './PriceInput'
@@ -55,7 +56,7 @@ export default {
     return {
       form: {
         title: null,
-        balance: '0,00',
+        balance: null,
       },
     }
   },
@@ -73,7 +74,7 @@ export default {
     save () {
       this.$v.$touch()
       if (!this.$v.form.$error) {
-        this.form.balance = this.form.balance.replace(',', '')
+        this.form.balance = priceFloatToInd(this.form.balance)
         this.$emit('save', { data: this.form })
       }
     },
@@ -82,7 +83,7 @@ export default {
     },
     clear () {
       this.form.title = null
-      this.form.balance = '0,00'
+      this.form.balance = null
       this.$v.$reset()
     },
   },

@@ -58,6 +58,7 @@ import ButtonActionCancel from './ButtonActionCancel'
 import PriceInputSmall from './PriceInputSmall'
 import { loadItems, deleteItem } from '@/utils/crudFunctions'
 import { mapActions } from 'vuex'
+import { priceFloatToInd } from '@/utils/price'
 
 export default {
   components: {
@@ -73,7 +74,7 @@ export default {
       editMode: null,
       form: {
         title: null,
-        balance: '0,00',
+        balance: null,
       },
     }
   },
@@ -99,7 +100,7 @@ export default {
         this.editMode = null
         this.form.id = null
         this.form.title = null
-        this.form.balance = '0,00'
+        this.form.balance = null
       } else {
         this.form.id = item.id
         this.form.title = item.title
@@ -109,7 +110,8 @@ export default {
     },
     editItem (item) {
       const data = { ...this.form }
-      data.balance = data.balance.replace(',', '')
+      data.balance = priceFloatToInd(data.balance)
+      console.log(data.balance)
       this.updateItem(data)
         .then(item => {
           this.toggleEditMode(item)

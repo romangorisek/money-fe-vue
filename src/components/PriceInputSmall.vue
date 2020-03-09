@@ -3,6 +3,8 @@
     class="input-without-details"
     v-model="amount"
     :label="label"
+    type="number"
+    step="0.01"
     solo
     dense
     :prepend-icon="amountSign"
@@ -15,7 +17,7 @@
 export default {
   props: {
     value: {
-      required: true,
+      default: null,
       type: String,
     },
     label: {
@@ -45,37 +47,16 @@ export default {
     },
   },
   created () {
-    this.amount = this.value
+    this.amount = (this.value + '').replace(',', '.')
   },
   watch: {
     value (newValue) {
       if (this.amount !== newValue) {
-        this.amount = newValue
+        this.amount = (newValue + '').replace(',', '.')
       }
     },
-    amount (newValue, oldValue) {
-      let modifiedValue = newValue.replace(',', '')
-      if (newValue.length > oldValue.length) {
-        if (newValue[0] === '0') {
-          modifiedValue = modifiedValue.substring(1)
-        }
-        this.amount = modifiedValue.substring(0, modifiedValue.length - 2) + ',' + modifiedValue.substring(modifiedValue.length - 2)
-        this.$emit('input', this.amount)
-      } else if (newValue.length < oldValue.length) {
-        if (oldValue !== '0,00') {
-          if (modifiedValue.length === 2) {
-            modifiedValue = '00' + modifiedValue
-          }
-          if (modifiedValue.length < 2) {
-            modifiedValue = '0' + modifiedValue
-          }
-          this.amount = modifiedValue.substring(0, modifiedValue.length - 2) + ',' + modifiedValue.substring(modifiedValue.length - 2)
-          this.$emit('input', this.amount)
-        } else {
-          this.amount = '00,00'
-          this.$emit('input', this.amount)
-        }
-      }
+    amount (amount) {
+      this.$emit('input', this.amount)
     },
   },
 }
