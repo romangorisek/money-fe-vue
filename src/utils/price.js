@@ -25,8 +25,6 @@ export const priceFloatToInd = price => {
   } else if (decimalPlaces === 1) {
     return price.replace('.', '') + '0'
   } else {
-    console.log(priceLength)
-    console.log(decimalPlaces)
     return price.replace('.', '').substring(0, priceLength - 1 - (decimalPlaces - 2))
   }
 }

@@ -111,7 +111,6 @@ export default {
     editItem (item) {
       const data = { ...this.form }
       data.balance = priceFloatToInd(data.balance)
-      console.log(data.balance)
       this.updateItem(data)
         .then(item => {
           this.toggleEditMode(item)
