@@ -2,15 +2,16 @@
   <v-text-field
     v-model="amount"
     :label="label"
-    type="number"
-    step="0.01"
     :prepend-icon="amountSign"
     :success="isIncomeSelected"
     :error="isExpenseSelected"
+    @blur="formatValue"
   ></v-text-field>
 </template>
 
 <script>
+import { priceFloatToInt, parsePrice } from '@/utils/price'
+
 export default {
   props: {
     value: {
@@ -44,12 +45,17 @@ export default {
     },
   },
   created () {
-    this.amount = (this.value + '').replace(',', '.')
+    this.amount = parsePrice(this.value)
+  },
+  methods: {
+    formatValue () {
+      this.form.amount = parsePrice(priceFloatToInt(this.form.amount))
+    },
   },
   watch: {
     value (newValue) {
       if (this.amount !== newValue) {
-        this.amount = (newValue + '').replace(',', '.')
+        this.amount = parsePrice(newValue)
       }
     },
     amount (amount) {

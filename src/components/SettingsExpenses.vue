@@ -58,7 +58,7 @@ import ButtonActionCancel from './ButtonActionCancel'
 import PriceInputSmall from './PriceInputSmall'
 import { loadItems, deleteItem } from '@/utils/crudFunctions'
 import { mapActions } from 'vuex'
-import { priceFloatToInd } from '@/utils/price'
+import { priceFloatToInt } from '@/utils/price'
 
 export default {
   components: {
@@ -110,7 +110,7 @@ export default {
     },
     editItem (item) {
       const data = { ...this.form }
-      data.budget = priceFloatToInd(data.budget)
+      data.budget = priceFloatToInt(data.budget)
       this.updateItem(data)
         .then(item => {
           this.toggleEditMode(item)

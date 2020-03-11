@@ -79,7 +79,7 @@ import FormErrors from './FormErrors'
 import FormErrorsLine from './FormErrorsLine'
 import PriceInput from './PriceInput'
 import { mapActions } from 'vuex'
-import { priceFloatToInd } from '@/utils/price'
+import { priceFloatToInt } from '@/utils/price'
 
 export default {
   components: {
@@ -157,7 +157,7 @@ export default {
       if (!this.$v.form.$error) {
         this.form.done_on = this.$moment(this.date).format('YYYY-MM-DD HH:mm:ss')
         const data = { ...this.form }
-        data.amount = priceFloatToInd(data.amount)
+        data.amount = priceFloatToInt(data.amount)
         if (!this.isIncomeSelected) {
           data.amount = '-' + data.amount
         }

@@ -56,7 +56,7 @@ import FormErrors from './FormErrors'
 import FormErrorsLine from './FormErrorsLine'
 import PriceInput from './PriceInput'
 import { mapActions } from 'vuex'
-import { priceFloatToInd } from '@/utils/price'
+import { priceFloatToInt } from '@/utils/price'
 
 export default {
   components: {
@@ -103,7 +103,7 @@ export default {
       this.$v.$touch()
       if (!this.$v.form.$error) {
         const data = { ...this.form }
-        data.amount = priceFloatToInd(data.amount)
+        data.amount = priceFloatToInt(data.amount)
         this.$emit('save', { data })
       }
     },

@@ -13,7 +13,7 @@ export const parsePriceAndSign = price => {
   return (`${parseFloat((`${price}`).replace(',', '.')).toFixed(2)}`).replace('.', ',') + ' €'
 }
 
-export const priceFloatToInd = price => {
+export const priceFloatToInt = price => {
   price = (price + '').replace(',', '.')
   const priceLength = price.length
   const dividerPos = price.indexOf('.')
