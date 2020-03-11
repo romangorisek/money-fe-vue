@@ -23,7 +23,7 @@ export default () => {
       return response
     },
     function (error) {
-      if (error.response.status === 401 && window.location.pathname !== '/login') {
+      if (error.response && error.response.status === 401 && window.location.pathname !== '/login') {
         store.dispatch('auth/forceSignOut')
           .then(() => {
             location.reload()

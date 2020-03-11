@@ -104,7 +104,7 @@ export default {
       } else {
         this.form.id = item.id
         this.form.title = item.title
-        this.form.budget = (item.budget / 100).toFixed(2).replace('.', ',')
+        this.form.budget = item.budget
         this.editMode = item.id
       }
     },

@@ -180,7 +180,9 @@ export default {
     this.loadIncomes()
     this.loadExpenses()
     if (!this._.isEmpty(this.transaction)) {
-      this.form = { ...this.form, ...this.transaction, amount: Math.abs(this.transaction.amount / 100).toFixed(2) }
+      console.log('this.transaction.amount')
+      console.log(this.transaction.amount)
+      this.form = { ...this.form, ...this.transaction, amount: Math.abs(this.transaction.amount) }
     }
   },
 }

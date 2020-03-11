@@ -19,7 +19,7 @@ export default {
   props: {
     value: {
       default: null,
-      type: String,
+      type: [String, Number],
     },
     label: {
       default: 'Znesek',
@@ -48,17 +48,22 @@ export default {
     },
   },
   created () {
-    this.amount = parsePrice(this.value)
+    if (this.value) {
+      this.amount = parsePrice(this.value)
+    }
   },
   methods: {
     formatValue () {
-      this.form.amount = parsePrice(priceFloatToInt(this.form.amount))
+      this.amount = parsePrice(priceFloatToInt(this.amount))
     },
   },
   watch: {
     value (newValue) {
       if (this.amount !== newValue) {
         this.amount = parsePrice(newValue)
+        if (this.amount === '0,00') {
+          this.amount = ''
+        }
       }
     },
     amount (amount) {
