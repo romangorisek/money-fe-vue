@@ -10,6 +10,9 @@ import expenses from './modules/expenses'
 import transactions from './modules/transactions'
 import clients from './modules/clients'
 import projects from './modules/projects'
+import paymentTypes from './modules/paymentTypes'
+import payments from './modules/payments'
+import work from './modules/work'
 
 Vue.use(Vuex)
 
@@ -30,5 +33,8 @@ export default new Vuex.Store({
     transactions,
     clients,
     projects,
+    paymentTypes,
+    payments,
+    work,
   },
 })
