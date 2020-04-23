@@ -96,7 +96,7 @@ export default {
           route: 'Business',
         }, {
           title: 'Nastavitve',
-          icon: 'mdi-settings-outline',
+          icon: 'fas fa-tools',
           route: 'Settings',
         },
       ],
